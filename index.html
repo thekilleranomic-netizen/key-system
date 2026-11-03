@@ -3,33 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urban Script - Free Key</title>
+    <title>Urban Script - Key System</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: #0b0e14; color: #fff; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
         .container { width: 100%; max-width: 420px; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 18px; }
-        .logo-icon { background: #161a22; color: #45a4bb; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #2d3748; }
-        .menu-badges { display: flex; gap: 8px; align-items: center; }
-        .lang-badge { background: #161a22; border: 1px solid #2d3748; padding: 6px 12px; border-radius: 20px; font-size: 12px; color: #8892b0; }
-        .menu-btn { background: #161a22; border: 1px solid #2d3748; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 16px; }
+        .logo-icon { background: #161a22; color: #45a4bb; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid #2d3748; }
+        .nav-links { display: flex; gap: 8px; }
+        .badge-btn { background: #161a22; border: 1px solid #2d3748; padding: 6px 12px; border-radius: 20px; font-size: 12px; color: #8892b0; cursor: pointer; transition: 0.2s; }
+        .badge-btn:hover, .badge-btn.active { background: #1a2234; color: #fff; border-color: #45a4bb; }
 
-        .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #8892b0; margin-bottom: 8px; font-weight: 600; }
-        h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
-        p.subtitle { color: #8892b0; font-size: 13px; margin-bottom: 24px; line-height: 1.5; }
+        .card { background-color: #12161f; border: 1px solid #1f293d; padding: 24px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 15px; }
+        h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #ffffff; }
+        p.subtitle { color: #8892b0; font-size: 13px; margin-bottom: 20px; line-height: 1.4; }
 
-        .step-card { background: #12161f; border: 1px solid #1f293d; padding: 16px; border-radius: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; }
-        .step-num { width: 28px; height: 28px; background: #1a2234; border: 1px solid #2d3748; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #45a4bb; flex-shrink: 0; }
-        .step-content h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; color: #fff; }
-        .step-content p { font-size: 11px; color: #8892b0; }
-
-        .action-card { background: #12161f; border: 1px solid #1f293d; padding: 24px; border-radius: 16px; text-align: center; margin-top: 20px; }
-        .key-box { background: #0b0e14; padding: 14px; border-radius: 10px; border: 1px solid #1f293d; font-family: monospace; font-size: 13px; margin-bottom: 14px; word-break: break-all; color: #22c55e; }
-        .btn { background-color: #ffffff; color: #0b0e14; border: none; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; font-size: 14px; transition: 0.2s; }
-        .btn:hover { background-color: #e2e8f0; }
+        .key-box { background: #0b0e14; padding: 14px; border-radius: 12px; border: 1px solid #1f293d; font-family: monospace; font-size: 13px; margin-bottom: 14px; word-break: break-all; color: #22c55e; text-align: center; }
         
+        .btn { background-color: #ffffff; color: #0b0e14; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; font-size: 14px; transition: 0.2s; }
+        .btn:hover { background-color: #e2e8f0; }
+
+        /* Style Panneau Admin */
+        .form-group { margin-bottom: 14px; text-align: left; }
+        .form-group label { display: block; font-size: 11px; color: #8892b0; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
+        .form-control { width: 100%; background: #0b0e14; border: 1px solid #1f293d; padding: 12px; border-radius: 10px; color: #fff; font-size: 13px; outline: none; }
+        .form-control:focus { border-color: #45a4bb; }
+        .admin-btn { background-color: #006eff; color: #fff; }
+        .admin-btn:hover { background-color: #0056cc; }
+
+        .hidden { display: none !important; }
         .footer-note { margin-top: 20px; color: #64748b; font-size: 11px; text-align: center; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -41,53 +45,67 @@
                 <div class="logo-icon">US</div>
                 <span>Urban Script</span>
             </div>
-            <div class="menu-badges">
-                <div class="lang-badge">FR</div>
-                <div class="menu-btn" onclick="alert('Menu : Accueil | Free Key | Produits | Tarifs')">☰</div>
+            <div class="nav-links">
+                <button class="badge-btn active" id="tabUser" onclick="switchTab('user')">Free Key</button>
+                <button class="badge-btn" id="tabAdmin" onclick="switchTab('admin')">⚙️ Admin</button>
             </div>
         </div>
 
-        <div class="tag">— GRATUIT · 24 H —</div>
-        <h1>Free key.</h1>
-        <p class="subtitle">Teste Urban Script gratuitement pendant 24h : termine les étapes de pub et repars avec ta clé.</p>
-
-        <div class="step-card">
-            <div class="step-num">1</div>
-            <div class="step-content">
-                <h3>Ouvre le lien</h3>
-                <p>Génère ton accès depuis ton loader en jeu.</p>
-            </div>
-        </div>
-        <div class="step-card">
-            <div class="step-num">2</div>
-            <div class="step-content">
-                <h3>Choisis ton produit</h3>
-                <p>Urban Script (Roblox FPS Hub).</p>
-            </div>
-        </div>
-        <div class="step-card">
-            <div class="step-num">3</div>
-            <div class="step-content">
-                <h3>Termine la pub</h3>
-                <p>Quelques étapes rapides sur Linkvertise.</p>
-            </div>
-        </div>
-        <div class="step-card">
-            <div class="step-num">4</div>
-            <div class="step-content">
-                <h3>Reçois ta clé</h3>
-                <p>Elle s'affiche directement ici bas.</p>
-            </div>
+        <!-- SECTION UTILISATEUR (FREE KEY) -->
+        <div id="userSection" class="card">
+            <h1>Free key.</h1>
+            <p class="subtitle">Récupère ta clé d'accès gratuite de 24 heures pour le script.</p>
+            
+            <div id="statusText" style="font-size: 13px; color: #8892b0; margin-bottom: 12px; text-align: center;">Génération de ta clé sécurisée...</div>
+            <div class="key-box hidden" id="keyDisplay"></div>
+            
+            <button class="btn hidden" id="copyBtn" onclick="copyKey()">📋 Copier la clé</button>
         </div>
 
-        <div class="action-card" id="actionCard">
-            <div id="statusText" style="font-size: 13px; color: #8892b0; margin-bottom: 12px;">Génération de ta clé sécurisée...</div>
-            <div class="key-box" id="keyDisplay" style="display:none;"></div>
-            <button class="btn" id="mainBtn" onclick="copyKey()" style="display:none;">📋 Copier la clé</button>
+        <!-- SECTION ADMIN (GÉNÉRATEUR DE CLÉS PERSONNALISÉES) -->
+        <div id="adminSection" class="card hidden">
+            <h1>Panel Administrateur</h1>
+            <p class="subtitle">Crée et configure des clés personnalisées pour ton base de données.</p>
+            
+            <div id="adminLogin">
+                <div class="form-group">
+                    <label>Mot de passe Admin</label>
+                    <input type="password" id="adminPass" class="form-control" placeholder="Entre ton mot de passe...">
+                </div>
+                <button class="btn admin-btn" onclick="checkAdmin()">Se connecter</button>
+            </div>
+
+            <div id="adminPanel" class="hidden">
+                <div class="form-group">
+                    <label>Personnaliser la Clé (Optionnel)</label>
+                    <input type="text" id="customKeyInput" class="form-control" placeholder="Laisse vide pour auto-générer">
+                </div>
+                <div class="form-group">
+                    <label>Grade / Rangs</label>
+                    <select id="rankSelect" class="form-control">
+                        <option value="Free">Free (24h)</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Developer">Developer</option>
+                        <option value="VIP">VIP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Durée de validité</label>
+                    <select id="durationSelect" class="form-control">
+                        <option value="14400">4 Heures</option>
+                        <option value="86400" selected>24 Heures (1 Jour)</option>
+                        <option value="604800">7 Jours</option>
+                        <option value="2592000">30 Jours</option>
+                        <option value="315360000">À vie (Lifetime)</option>
+                    </select>
+                </div>
+                <button class="btn admin-btn" onclick="createCustomKey()">✨ Générer et Ajouter la Clé</button>
+                <div id="adminMsg" style="font-size: 12px; margin-top: 12px; text-align: center;"></div>
+            </div>
         </div>
 
         <div class="footer-note">
-            Colle cette clé dans ton loader en jeu. Elle s'enregistrera automatiquement.
+            Urban Script Security System &copy; 2026
         </div>
     </div>
 
@@ -96,50 +114,103 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_T8FrLyw2SJaQg2BswtqJPA_B8R2LykI';
         const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        async function generateKey() {
-            // Vérifie si une clé existe déjà dans le navigateur pour éviter le spam
-            let existingKey = localStorage.getItem('urban_active_key');
-            let existingTime = localStorage.getItem('urban_active_time');
+        // Mot de passe administrateur (change-le si tu veux)
+        const ADMIN_SECRET = "urban777";
+
+        function switchTab(tab) {
+            if(tab === 'user') {
+                document.getElementById('userSection').classList.remove('hidden');
+                document.getElementById('adminSection').classList.add('hidden');
+                document.getElementById('tabUser').classList.add('active');
+                document.getElementById('tabAdmin').classList.remove('active');
+            } else {
+                document.getElementById('userSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+                document.getElementById('tabAdmin').classList.add('active');
+                document.getElementById('tabUser').classList.remove('active');
+            }
+        }
+
+        function checkAdmin() {
+            let pass = document.getElementById('adminPass').value;
+            if(pass === ADMIN_SECRET) {
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else {
+                alert("Mot de passe incorrect !");
+            }
+        }
+
+        // Génération automatique pour l'utilisateur normal (Free 24h)
+        async function handleUserKey() {
+            let savedKey = localStorage.getItem('urban_active_key');
+            let savedTime = localStorage.getItem('urban_active_time');
             let now = Date.now();
 
-            if (existingKey && existingTime && (now - existingTime < 86400000)) {
-                showKey(existingKey);
+            if (savedKey && savedTime && (now - savedTime < 86400000)) {
+                displayUserKey(savedKey);
                 return;
             }
 
-            // Génération d'une nouvelle clé Free (24h)
-            const randomKey = "URBAN-FREE-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const expirationTime = Math.floor(now / 1000) + 86400; // 24 heures
+            let randomKey = "URBAN-FREE-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            let expirationTime = Math.floor(now / 1000) + 86400;
 
-            const { error } = await client
+            let { error } = await client
                 .from('keys')
                 .insert([{ key: randomKey, rank: 'Free', expires_at: expirationTime }]);
 
             if (!error) {
                 localStorage.setItem('urban_active_key', randomKey);
                 localStorage.setItem('urban_active_time', now);
-                showKey(randomKey);
+                displayUserKey(randomKey);
             } else {
                 document.getElementById("statusText").innerText = "Erreur de connexion à la base de données.";
             }
         }
 
-        function showKey(k) {
+        function displayUserKey(k) {
             document.getElementById("statusText").innerText = "Ta clé Urban Script est prête :";
             let box = document.getElementById("keyDisplay");
             box.innerText = k;
-            box.style.display = "block";
-            let btn = document.getElementById("mainBtn");
-            btn.style.display = "block";
+            box.classList.remove("hidden");
+            let btn = document.getElementById("copyBtn");
+            btn.classList.remove("hidden");
         }
 
         function copyKey() {
-            const keyText = document.getElementById("keyDisplay").innerText;
+            let keyText = document.getElementById("keyDisplay").innerText;
             navigator.clipboard.writeText(keyText);
             alert("Clé copiée avec succès ! Retourne en jeu.");
         }
 
-        generateKey();
+        // Création d'une clé personnalisée depuis le Panel Admin
+        async function createCustomKey() {
+            let customKeyVal = document.getElementById('customKeyInput').value.trim();
+            let rankVal = document.getElementById('rankSelect').value;
+            let durationSeconds = parseInt(document.getElementById('durationSelect').value);
+            let msgBox = document.getElementById('adminMsg');
+
+            let finalKey = customKeyVal !== "" ? customKeyVal : "URBAN-" + rankVal.toUpperCase() + "-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            let expirationTime = Math.floor(Date.now() / 1000) + durationSeconds;
+
+            msgBox.style.color = "#8892b0";
+            msgBox.innerText = "Création en cours...";
+
+            let { error } = await client
+                .from('keys')
+                .insert([{ key: finalKey, rank: rankVal, expires_at: expirationTime }]);
+
+            if (!error) {
+                msgBox.style.color = "#22c55e";
+                msgBox.innerText = "Succès ! Clé créée : " + finalKey;
+                document.getElementById('customKeyInput').value = "";
+            } else {
+                msgBox.style.color = "#ef4444";
+                msgBox.innerText = "Erreur : " + error.message;
+            }
+        }
+
+        handleUserKey();
     </script>
 </body>
 </html>
