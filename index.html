@@ -2,24 +2,58 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Urban Script - Key Generation</title>
     <style>
-        body { background-color: #0e1117; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background-color: #161a22; padding: 30px; border-radius: 10px; border: 1px solid #2d3748; text-align: center; width: 380px; }
-        h2 { color: #45a4bb; margin-bottom: 10px; font-size: 18px; }
-        p { color: #8892b0; font-size: 12px; margin-bottom: 20px; }
-        .key-box { background: #0e1117; padding: 12px; border-radius: 6px; border: 1px solid #45a4bb; font-family: monospace; font-size: 13px; margin-bottom: 20px; word-break: break-all; }
-        button { background-color: #006eff; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
-        button:hover { background-color: #0056cc; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #0b0e14; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { width: 100%; max-width: 420px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 16px; }
+        .logo-icon { background: #161a22; color: #45a4bb; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: bold; border: 1px solid #2d3748; }
+        .lang-badge { background: #161a22; border: 1px solid #2d3748; padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #8892b0; font-weight: 500; }
+        
+        .card { background-color: #12161f; border: 1px solid #1f293d; padding: 32px 24px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .success-icon { width: 54px; height: 54px; background-color: rgba(34, 197, 94, 0.12); color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 26px; border: 1px solid rgba(34, 197, 94, 0.25); }
+        
+        h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #ffffff; letter-spacing: -0.3px; }
+        p.subtitle { color: #8892b0; font-size: 13px; margin-bottom: 28px; line-height: 1.4; }
+        
+        .key-box { background: #0b0e14; padding: 14px 16px; border-radius: 12px; border: 1px solid #1f293d; font-family: monospace; font-size: 13px; margin-bottom: 16px; word-break: break-all; color: #e2e8f0; letter-spacing: 0.5px; }
+        
+        .btn { background-color: #1a2234; color: #ffffff; border: 1px solid #2d3748; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; font-size: 14px; }
+        .btn:hover { background-color: #243049; border-color: #45a4bb; }
+        
+        .footer-note { margin-top: 24px; color: #64748b; font-size: 12px; line-height: 1.5; }
+        .footer-note a { color: #45a4bb; text-decoration: none; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div class="card">
-        <h2>Generation de Licence Free</h2>
-        <p>Validite : 24 heures</p>
-        <div class="key-box" id="keyDisplay">Generation en cours...</div>
-        <button onclick="copyKey()">Copier la cle</button>
+    <div class="container">
+        <div class="header">
+            <div class="logo-area">
+                <div class="logo-icon">US</div>
+            </div>
+            <div class="lang-badge">FR</div>
+        </div>
+
+        <div class="card">
+            <div class="success-icon">✓</div>
+            <h1>Ta clé Urban Script est prête</h1>
+            <p class="subtitle">Validité de 24 heures pour ton accès Free.</p>
+            
+            <div class="key-box" id="keyDisplay">Sécurisation et génération...</div>
+            
+            <button class="btn" onclick="copyKey()">
+                <span>📋 Copier la clé</span>
+            </button>
+            
+            <div class="footer-note">
+                Colle cette clé dans ton loader en jeu.<br>Besoin d'aide ? Rejoins notre communauté.
+            </div>
+        </div>
     </div>
 
     <script>
@@ -27,28 +61,41 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_T8FrLyw2SJaQg2BswtqJPA_B8R2LykI';
         const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        async function generateFreeKey() {
-            const randomKey = "URBAN-FREE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const expirationTime = Math.floor(Date.now() / 1000) + 86400;
+        async function handleSecureKey() {
+            const savedKey = localStorage.getItem('urban_free_key');
+            const savedTime = localStorage.getItem('urban_key_time');
+            const now = Date.now();
+
+            if (savedKey && savedTime && (now - savedTime < 86400000)) {
+                document.getElementById("keyDisplay").innerText = savedKey;
+                return;
+            }
+
+            const randomKey = "URBAN-FREE-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const expirationTime = Math.floor(now / 1000) + 86400;
 
             const { error } = await client
                 .from('keys')
                 .insert([{ key: randomKey, rank: 'Free', expires_at: expirationTime }]);
 
             if (!error) {
+                localStorage.setItem('urban_free_key', randomKey);
+                localStorage.setItem('urban_key_time', now);
                 document.getElementById("keyDisplay").innerText = randomKey;
             } else {
-                document.getElementById("keyDisplay").innerText = "Erreur de generation.";
+                document.getElementById("keyDisplay").innerText = "Erreur de génération de la clé.";
             }
         }
 
         function copyKey() {
             const keyText = document.getElementById("keyDisplay").innerText;
+            if (keyText.includes("Erreur") || keyText.includes("Sécurisation")) return;
+            
             navigator.clipboard.writeText(keyText);
-            alert("Cle copiee dans le presse-papiers.");
+            alert("Clé copiée dans le presse-papiers avec succès !");
         }
 
-        generateFreeKey();
+        handleSecureKey();
     </script>
 </body>
 </html>
