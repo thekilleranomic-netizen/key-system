@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Urban Script - Key Generation</title>
+    <style>
+        body { background-color: #0e1117; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background-color: #161a22; padding: 30px; border-radius: 10px; border: 1px solid #2d3748; text-align: center; width: 380px; }
+        h2 { color: #45a4bb; margin-bottom: 10px; font-size: 18px; }
+        p { color: #8892b0; font-size: 12px; margin-bottom: 20px; }
+        .key-box { background: #0e1117; padding: 12px; border-radius: 6px; border: 1px solid #45a4bb; font-family: monospace; font-size: 13px; margin-bottom: 20px; word-break: break-all; }
+        button { background-color: #006eff; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
+        button:hover { background-color: #0056cc; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="card">
+        <h2>Generation de Licence Free</h2>
+        <p>Validite : 24 heures</p>
+        <div class="key-box" id="keyDisplay">Generation en cours...</div>
+        <button onclick="copyKey()">Copier la cle</button>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://cjmobvvzrlysikeyvntv.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_T8FrLyw2SJaQg2BswtqJPA_B8R2LykI';
+        const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function generateFreeKey() {
+            const randomKey = "URBAN-FREE-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const expirationTime = Math.floor(Date.now() / 1000) + 86400;
+
+            const { error } = await client
+                .from('keys')
+                .insert([{ key: randomKey, rank: 'Free', expires_at: expirationTime }]);
+
+            if (!error) {
+                document.getElementById("keyDisplay").innerText = randomKey;
+            } else {
+                document.getElementById("keyDisplay").innerText = "Erreur de generation.";
+            }
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById("keyDisplay").innerText;
+            navigator.clipboard.writeText(keyText);
+            alert("Cle copiee dans le presse-papiers.");
+        }
+
+        generateFreeKey();
+    </script>
+</body>
+</html>
